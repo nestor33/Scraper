@@ -15,30 +15,21 @@ export class AppService {
   ) {}
 
   async scrapeEstates(): Promise<EstateModel[]> {
-    const response = await firstValueFrom(
+    const response: any = await firstValueFrom(
       this.httpService.get(
         'https://www.sreality.cz/api/en/v2/estates?category_main_cb=1&category_type_cb=1&per_page=500&tms=1667210981665',
       ),
     );
 
-    const estates: EstateModel[] = [];
-    const myObj = response.data._embedded.estates;
+    const estates: EstateModel[] = response.data._embedded.estates.map(
+      (estate: any) => ({
+        title: estate.name,
+        url: `https://www.sreality.cz/detail/prodej/byt/2+1/prostejov-prostejov-dobrovskeho/${estate.hash_id}`,
+        imageUrl: estate._links.images[0].href,
+      }),
+    );
 
-    Object.keys(myObj).forEach(function (key) {
-      const title = myObj[key].name;
-      const hash_Id = myObj[key].hash_id;
-      const imageurl = myObj[key]._links.images[0].href;
-      const url = `https://www.sreality.cz/detail/prodej/byt/2+1/prostejov-prostejov-dobrovskeho/${hash_Id}`;
-
-      const estate: EstateModel = {
-        title: `${title}`,
-        url: `${url}`,
-        imageUrl: `${imageurl}`,
-      };
-      estates.push(estate);
-    });
-
-    estates.map((estate) => {
+    estates.forEach((estate) => {
       this.estatesRepository.insert(estate);
     });
 
@@ -47,11 +38,6 @@ export class AppService {
 
   async getEstates(): Promise<Estate[]> {
     const estates = await this.estatesRepository.find();
-    // this.estatesRepository.insert({
-    //   url: `Estate #${estates.length + 1}`,
-    //   title: 'xxx',
-    //   imageUrl: 'ssdsd',
-    // });
     return estates;
   }
 }

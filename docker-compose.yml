@@ -5,7 +5,7 @@ volumes:
 
 services:
   scraper-api:
-    restart: on-failure
+    # restart: on-failure
     build:
       context: server
       dockerfile: ./Dockerfile
@@ -16,19 +16,19 @@ services:
     command: npm run start:dev
     volumes:
       - ./server:/scraper-api/
-      - /server/node_modules
+      - /scraper-api/node_modules
 
   scraper-frontend:
-    restart: on-failure
+    # restart: on-failure
     build:
       context: client
       dockerfile: ./Dockerfile
     ports:
-      - '3000:3000'
+      - '8080:3000'
     command: npm start
     volumes:
       - ./client:/scraper-frontend/
-      - /client/node_modules
+      - /scraper-frontend/node_modules
 
   scraper-db:
     image: postgres:15.0
