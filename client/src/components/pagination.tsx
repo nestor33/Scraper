@@ -1,37 +1,35 @@
+import { Pagination, Typography } from '@mui/material';
+import { Stack } from '@mui/system';
+import React, { useState } from 'react';
+
 export interface Props {
   postsPerPage: number;
   totalPosts: number;
   paginate: any;
 }
 
-function Pagination(props: Props) {
+function PaginationControlled(props: Props) {
   const pageNumbers: number[] = [];
+  const [page, setPage] = useState(1);
+  const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    setPage(value);
+  };
 
   for (let i = 1; i <= Math.ceil(props.totalPosts / props.postsPerPage); i++) {
     pageNumbers.push(i);
   }
 
   return (
-    <nav>
-      <ul>
-        Pages :
-        {pageNumbers.map((num) => {
-          return (
-            <li key={num} style={{ display: 'inline-block' }}>
-              <a
-                onClick={() => {
-                  props.paginate(num);
-                }}
-                href='!#'
-              >
-                {num}...
-              </a>
-            </li>
-          );
-        })}
-      </ul>
-    </nav>
+    <Stack>
+      <Typography>Page: {page}</Typography>
+      <Pagination
+        count={pageNumbers.length}
+        page={page}
+        onChange={handleChange}
+        onClick={props.paginate(page)}
+      ></Pagination>
+    </Stack>
   );
 }
 
-export default Pagination;
+export default PaginationControlled;
