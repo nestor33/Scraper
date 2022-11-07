@@ -39,17 +39,19 @@ function FlatTable() {
   return (
     <>
       <Grid container>
-        <Button
-          onClick={async () => {
-            await axios({
-              method: 'GET',
-              url: 'http://localhost:3001/scrapeEstates',
-            });
-            await getEstates();
-          }}
-        >
-          Scrape estates
-        </Button>
+        <Grid item>
+          <Button
+            onClick={async () => {
+              await axios({
+                method: 'GET',
+                url: 'http://localhost:3001/scrapeEstates',
+              });
+              await getEstates();
+            }}
+          >
+            Scrape estates
+          </Button>
+        </Grid>
       </Grid>
       <Grid
         container
@@ -71,11 +73,13 @@ function FlatTable() {
         })}
       </Grid>
 
-      <Footer
-        postsPerPage={postsPerPage}
-        totalPosts={estates.length}
-        paginate={paginate}
-      />
+      <Grid item>
+        <Footer
+          postsPerPage={postsPerPage}
+          totalPosts={estates.length}
+          paginate={paginate}
+        />
+      </Grid>
     </>
   );
 }

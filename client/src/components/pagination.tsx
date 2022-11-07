@@ -1,4 +1,4 @@
-import { Pagination, Typography } from '@mui/material';
+import { Grid, Pagination, Typography } from '@mui/material';
 import { Stack } from '@mui/system';
 import React, { useState } from 'react';
 
@@ -20,15 +20,24 @@ function PaginationControlled(props: Props) {
   }
 
   return (
-    <Stack>
-      <Typography>Page: {page}</Typography>
-      <Pagination
-        count={pageNumbers.length}
-        page={page}
-        onChange={handleChange}
-        onClick={props.paginate(page)}
-      ></Pagination>
-    </Stack>
+    <Grid
+      container
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
+      <Stack>
+        <Typography>Page: {page}</Typography>
+        <Pagination
+          count={pageNumbers.length}
+          page={page}
+          onChange={handleChange}
+          onClick={props.paginate(page)}
+        ></Pagination>
+      </Stack>
+    </Grid>
   );
 }
 
